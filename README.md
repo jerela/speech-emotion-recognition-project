@@ -8,4 +8,4 @@ The abstract of **report.pdf** describes the project:
 For more details, please read the report.
 To see the MATLAB code, check the *scripts* folder.
 
-![Summary of the workflow of the project.](img/workflow.png)
+![Summary of the workflow of the project.](img/MLFS_workflow.png)
