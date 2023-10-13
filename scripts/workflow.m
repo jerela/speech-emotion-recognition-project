@@ -1,12 +1,11 @@
 clc;clear;close all;
 
-path_root = 'C:\Users\lavik\OneDrive\Documents\Machine Learning for Speech\Project\Unpacked';
-
-path_extracted = 'C:\Users\lavik\OneDrive\Documents\Machine Learning for Speech\Project\Extracted_data';
+% note: I changed these two paths prior to publishing on GitHub to retain some directory path anonymity
+path_root = 'Machine Learning for Speech\Project\Unpacked';
+path_extracted = 'Machine Learning for Speech\Project\Extracted_data';
 
 % target sampling rate for resampling
 f_target = 16000;
-
 
 %% extract data from AESDD
 data_path = 'AESDD';
@@ -16,9 +15,6 @@ labels = {};
 data = {};
 
 for subfolder = 1:length(subfolders)
-    
-    
-    
     % get emotion
     emotion = subfolders{subfolder};
     
@@ -65,10 +61,7 @@ for subfolder = 1:length(subfolders)
         data{numel(data)+1} = y;
         
     end
-    
-    
 end
-
 
 data_AESDD = data;
 labels_AESDD = labels;
@@ -145,8 +138,6 @@ for j = 1:length(wavs)
     
 end
 
-    
-
 data_Berlin = data;
 labels_Berlin = labels;
 clearvars -except data_* labels_* path_root f_target path_*
@@ -155,7 +146,6 @@ cd(path_extracted)
 save('data_Berlin','data_Berlin')
 save('labels_Berlin','labels_Berlin')
 
-
 %% extract data from Oreau dataset
 data_path = 'OréauFR_02\OréauFR_02';
 
@@ -163,9 +153,6 @@ labels = {};
 data = {};
 
 gender_folders = {'m','f'};
-
-
-
 
 for gender_folder_i = 1:length(gender_folders)
     gender_folder = gender_folders{gender_folder_i};
@@ -245,19 +232,14 @@ for gender_folder_i = 1:length(gender_folders)
     end
 
 end
-    
 
 data_Oreau = data;
 labels_Oreau = labels;
 clearvars -except data_* labels_* f_target path_*
 
-
-
 cd(path_extracted)
 save('data_Oreau','data_Oreau')
 save('labels_Oreau','labels_Oreau')
-
-
 
 %% extract data from RAVDESS dataset
 data_path = 'Ryerson';
@@ -268,8 +250,6 @@ data = {};
 subfolders = dir(fullfile(path_root,data_path));
 subfolders = subfolders(3:end);
 subfolders = {subfolders.name};
-
-
 
 for subfolder = 1:length(subfolders)
 
@@ -342,19 +322,13 @@ for subfolder = 1:length(subfolders)
     end
 end
     
-
 data_RAVDESS = data;
 labels_RAVDESS = labels;
 clearvars -except data_* labels_* path_* f_target
 
-
-
 cd(path_extracted)
 save('data_RAVDESS','data_RAVDESS')
 save('labels_RAVDESS','labels_RAVDESS')
-
-
-
 
 %% extract data from Toronto dataset
 data_path = 'Toronto';
@@ -420,17 +394,13 @@ for j = 1:length(wavs)
     
 end
 
-    
-
 data_TESS = data;
 labels_TESS = labels;
 clearvars -except data_* labels_* path_* f_target
 
-
 cd(path_extracted)
 save('data_TESS','data_TESS')
 save('labels_TESS','labels_TESS')
-
 
 %% extract data from Urdu dataset
 data_path = 'URDU-Dataset-master';
@@ -439,9 +409,6 @@ labels = {};
 data = {};
 
 subfolders = {'Angry', 'Happy', 'Neutral', 'Sad'};
-
-
-
 
 for subfolder = 1:length(subfolders)
 
@@ -518,13 +485,6 @@ save('labels_Urdu','labels_Urdu')
 
 
 
-
-
-
-
-
-
-
 %% Combine all data
 
 cd(path_extracted)
@@ -550,8 +510,6 @@ for i = 1:length(dataset_names)
     labels = [labels labels_current];
     dataset_ids = [dataset_ids; ones(length(data_current),1)*i];
 end
-
-
 
 %% for all vectors in data, perform feature extraction
 
@@ -627,8 +585,6 @@ for data_i = 1:length(data)
     y_trimmed = y(voice_indices);
     
     %% feature extraction
-    
-
     features = extract(aFE,y_trimmed);
     final_features{numel(final_features)+1} = mean(features);
     final_features_matrix = [final_features_matrix; mean(features)];
@@ -639,13 +595,9 @@ end
 %% get final class labels
 
 final_labels = {};
-
 for label_i = 1:length(labels)
     final_labels{numel(final_labels)+1} = labels{label_i};
 end
-
-
-
 
 %% get data only from the emotions common to all datasets (anger, happiness, sadness)
 
@@ -673,7 +625,6 @@ end
 cd(path_extracted)
 save('final_data','dataset_ids_common', 'final_features_matrix_common', 'final_emotions_common', 'final_subjects_common', 'final_datasets_common', 'dataset_names', 'idx')
 
-
 %% correlation analysis between predictors and target
 
 % construct numerical labels
@@ -698,9 +649,6 @@ for feature_i = 1:length(feature_names)
         correlation_coeffs = [correlation_coeffs; zeros(numel(current_idx),1)];
     end
 end
-
-%final_labels_categorical = categorical(final_labels)';
-%final_labels_double = double(final_labels_categorical);
 
 
 %% plot data distribution
@@ -748,22 +696,13 @@ end
 pie(piedata_subjects_n,dataset_names)
 title(sprintf('distribution of %i subjects',sum(piedata_subjects_n)))
 
-% order
-
-
 %% classify data and calculate test accuracy on each individual dataset when they are excluded one in turn
 clearvars -except path_*
 
 cd(path_extracted)
 load('final_data.mat')
 
-% features to include
-%features_to_include = {'mfcc', }
-%temp = final_features_matrix_common;
-%final_features_matrix_common = [];
-%final_features_matrix_common = 
-
-path_project = 'C:\Users\lavik\OneDrive\Documents\Machine Learning for Speech\Project';
+path_project = 'Machine Learning for Speech\Project';
 cd(path_project)
 
 % define parameters for different classifiers
